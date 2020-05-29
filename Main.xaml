@@ -1,0 +1,45 @@
+﻿<Page x:Class="WPF_Project.Main"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPF_Project"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Password Manager" Height="600" Width="1200"
+        MinHeight="300" MinWidth="600">
+    <Page.Resources>
+    </Page.Resources>
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Width="1190" Height="600">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" >
+            <Menu DockPanel.Dock="Top" HorizontalAlignment="Right">
+                <MenuItem Header="Password Generator" />
+                <MenuItem Header="Log out" Click="MenuItem_Click" />
+                <MenuItem Header="Save"/>
+            </Menu>
+        </DockPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TreeView Grid.Column="0" x:Name="TreeView">
+                <TreeView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Directory" Click="Dir_Add"/>
+                        <MenuItem Header="Add file">
+                            <MenuItem Header="Passwords" Click="Pwd_Add"/>
+                            <MenuItem Header="Image" Click="Img_Add" />
+                        </MenuItem>
+                    </ContextMenu>
+                </TreeView.ContextMenu>
+            </TreeView>
+            <GridSplitter Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</Page>
