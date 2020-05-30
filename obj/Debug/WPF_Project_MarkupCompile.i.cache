@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\VickersZhu\source\repos\WPF_Project\obj\Debug\
+C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\
 WPF_Project
 none
 false
 DEBUG;TRACE
-C:\Users\VickersZhu\source\repos\WPF_Project\App.xaml
-31010799012
+C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\App.xaml
+6260845823
 
-9497312188
+18652039272
 13152784993
-Login.xaml;Main.xaml;MainWindow.xaml;
+Dir.xaml;Img.xaml;Login.xaml;Main.xaml;MainWindow.xaml;Pwd.xaml;
 
-False
+True
 

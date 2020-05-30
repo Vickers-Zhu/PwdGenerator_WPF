@@ -5,30 +5,38 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPF_Project"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Password Manager" Height="600" Width="1200"
-        MinHeight="300" MinWidth="600">
+      d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
+        <local:ViewConverter x:Key="viewConverter" />
+        <Style x:Key="MenuItem" TargetType="MenuItem">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style x:Key="DirItem" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style x:Key="OtherItem" TargetType="TextBlock">
+            <Setter Property="FontStyle" Value="Italic"/>
+        </Style>
     </Page.Resources>
-    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Width="1190" Height="600">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" >
+        <DockPanel Grid.Row="0" HorizontalAlignment="Stretch">
             <Menu DockPanel.Dock="Top" HorizontalAlignment="Right">
-                <MenuItem Header="Password Generator" />
-                <MenuItem Header="Log out" Click="MenuItem_Click" />
-                <MenuItem Header="Save"/>
+                <MenuItem Style="{StaticResource MenuItem}" Header="Password Generator" />
+                <MenuItem Style="{StaticResource MenuItem}" Header="Log out" Click="MenuItem_Click" />
+                <MenuItem Style="{StaticResource MenuItem}" Header="Save"/>
             </Menu>
         </DockPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="10" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
-            <TreeView Grid.Column="0" x:Name="TreeView">
+            <TreeView Grid.Column="0" x:Name="TreeView" ItemsSource="{Binding}" SelectedValuePath="">
                 <TreeView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Add Directory" Click="Dir_Add"/>
@@ -38,8 +46,30 @@
                         </MenuItem>
                     </ContextMenu>
                 </TreeView.ContextMenu>
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type local:DirItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Header}" Style="{StaticResource DirItem}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type local:PwdItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Header}" Style="{StaticResource OtherItem}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type local:ImgItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Header}" Style="{StaticResource OtherItem}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
             </TreeView>
             <GridSplitter Grid.Column="1"/>
+            <DockPanel Grid.Column="2">
+                <Frame Source="{Binding ElementName=TreeView, Path=SelectedItem, Converter={StaticResource viewConverter}}" 
+                       x:Name="_NavigationFrame" NavigationUIVisibility="Hidden"
+               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </DockPanel>
         </Grid>
     </Grid>
 </Page>

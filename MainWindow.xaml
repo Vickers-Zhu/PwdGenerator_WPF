@@ -7,13 +7,8 @@
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Password Manager" Height="600" Width="1200"
         MinHeight="300" MinWidth="600">
-    <Window.Resources>
-
-
-
-    </Window.Resources>
-
     <DockPanel>
-        <Frame x:Name="_NavigationFrame" NavigationUIVisibility="Hidden"/>
+        <Frame x:Name="_NavigationFrame" NavigationUIVisibility="Hidden"
+               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </DockPanel>
 </Window>

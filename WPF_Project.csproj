@@ -55,6 +55,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dir.xaml.cs">
+      <DependentUpon>Dir.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Img.xaml.cs">
+      <DependentUpon>Img.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Items\ImgItem.cs" />
+    <Compile Include="Items\Pwd.cs" />
+    <Compile Include="Items\PwdItem.cs" />
+    <Compile Include="Pwd.xaml.cs">
+      <DependentUpon>Pwd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewConverter.cs" />
+    <Page Include="Dir.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Img.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -71,6 +92,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\BaseItem.cs" />
+    <Compile Include="Items\DirItem.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -81,6 +104,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pwd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PasswordStrength.cs" />

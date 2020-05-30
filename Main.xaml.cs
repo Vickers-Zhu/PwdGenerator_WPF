@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,16 @@ namespace WPF_Project
     /// </summary>
     public partial class Main : Page
     {
+        public ObservableCollection<BaseItem> Items { get; set; }
+
         public Main()
         {
             InitializeComponent();
+            Items = new ObservableCollection<BaseItem>();
+            DirItem.Count = 0;
+            PwdItem.Count = 0;
+            ImgItem.Count = 0;
+            this.DataContext = Items;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -32,17 +40,23 @@ namespace WPF_Project
 
         private void Dir_Add(object sender, RoutedEventArgs e)
         {
-            this.TreeView.Items.Add(new TreeViewItem());
+            BaseItem item = new DirItem();
+            item.Header = "New Directory " + (++DirItem.Count).ToString();
+            Items.Add(item);
         }
 
         private void Pwd_Add(object sender, RoutedEventArgs e)
         {
-
+            BaseItem item = new PwdItem();
+            item.Header = "New Password " + (++PwdItem.Count).ToString();
+            Items.Add(item);
         }
 
         private void Img_Add(object sender, RoutedEventArgs e)
         {
-
+            BaseItem item = new ImgItem();
+            item.Header = "New Image " + (++ImgItem.Count).ToString();
+            Items.Add(item);
         }
     }
 }

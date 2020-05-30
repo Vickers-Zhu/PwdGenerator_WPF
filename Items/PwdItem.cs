@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WPF_Project
+{
+    public class PwdItem : BaseItem
+    {
+        public static int Count { get; set; }
+        
+    }
+}
