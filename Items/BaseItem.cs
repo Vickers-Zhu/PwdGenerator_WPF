@@ -9,8 +9,27 @@ namespace WPF_Project
 {
     public class BaseItem : INotifyPropertyChanged
     {
-        public string Header { get; set; }
+        private string header;
+
+        public string Header
+        {
+            get => header;
+
+            set
+            {
+                header = value;
+                OnPropertyChanged("Header");
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

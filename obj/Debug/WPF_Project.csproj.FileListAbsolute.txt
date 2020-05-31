@@ -19,7 +19,6 @@ C:\Users\VickersZhu\source\repos\WPF_Project\obj\Debug\Login.baml
 C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\bin\Debug\WPF_Project.exe.config
 C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\bin\Debug\WPF_Project.exe
 C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\bin\Debug\WPF_Project.pdb
-C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\WPF_Project.csprojAssemblyReference.cache
 C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\Login.g.cs
 C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\Main.g.cs
 C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\MainWindow.g.cs

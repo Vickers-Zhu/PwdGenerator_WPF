@@ -4,8 +4,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPF_Project"
+      xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
+    <Page.DataContext>
+        <local:PwdViewModel />
+    </Page.DataContext>
     <Page.Resources>
         <local:ViewConverter x:Key="viewConverter" />
         <Style x:Key="MenuItem" TargetType="MenuItem">
@@ -36,13 +40,13 @@
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
-            <TreeView Grid.Column="0" x:Name="TreeView" ItemsSource="{Binding}" SelectedValuePath="">
+            <TreeView Grid.Column="0" x:Name="TreeView" ItemsSource="{Binding Items}">
                 <TreeView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add Directory" Click="Dir_Add"/>
+                        <MenuItem Header="Add Directory" Command="{Binding DirAddCommand}" />
                         <MenuItem Header="Add file">
-                            <MenuItem Header="Passwords" Click="Pwd_Add"/>
-                            <MenuItem Header="Image" Click="Img_Add" />
+                            <MenuItem Header="Passwords" Command="{Binding PwdAddCommand}"/>
+                            <MenuItem Header="Image" Command="{Binding ImgAddCommand}" />
                         </MenuItem>
                     </ContextMenu>
                 </TreeView.ContextMenu>
@@ -67,7 +71,10 @@
             <GridSplitter Grid.Column="1"/>
             <DockPanel Grid.Column="2">
                 <Frame Source="{Binding ElementName=TreeView, Path=SelectedItem, Converter={StaticResource viewConverter}}" 
-                       x:Name="_NavigationFrame" NavigationUIVisibility="Hidden"
+                       x:Name="_NavigationFrame" NavigationUIVisibility="Hidden" 
+                       DataContext="{Binding ElementName=TreeView, Path=SelectedItem, Mode=OneWay}"
+                       LoadCompleted="frame_LoadCompleted"
+                       DataContextChanged="frame_DataContextChanged"
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </DockPanel>
         </Grid>
