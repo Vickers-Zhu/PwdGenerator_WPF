@@ -49,41 +49,6 @@
         </ul>
         <ul>
             <li>
-                Password generator:
-                <ul>
-                    <li>"Password Generator" menu opens Password Generator window</li>
-                    <li>Window title: "Password Generator"</li>
-                    <li>Window size: 400x400</li>
-                    <li>Window cannot be resized</li>
-                    <li>Window always opens in the center of the main application window</li>
-                    <li>When the window is visible, the main application window cannot be selected</li>
-                    <li>Font size for all elements is 14</li>
-                    <li>Sections separated with a horizontal line</li>
-                    <li>Bold font of size 15 for the section names</li>
-                </ul>
-                <br />
-                <ul>
-                    <li>White password with the colored background. Password font is "Consolas". Background color matches password strength</li>
-                    <li>Password text can be selected and copied with a mouse</li>
-                    <li>Displaying the strength of the password</li>
-                    <li>Rounded and transparent "Refresh" and "Copy" buttons</li>
-                    <li>"Refresh" generates new password</li>
-                    <li>"Copy" copies current password to the clipboard</li>
-                </ul>
-                <br />
-                <ul>
-                    <li>Slider with password length. Value displays to the right of a slider. Minimum is 1, maximum is 128 and default value is 8</li>
-                    <li>Checkboxes to include in a password additional symbols: "Upper case letters", "Digits" and "Symbols": !#$%&()*+,-./:;<=>?@[\\]^_{|}~</li>
-                    <li>Displaying sliders with numeric values for each checked option</li>
-                    <li>Options to use the "Minimum" number of checked symbols or "Exactly" that number of symbols</li>
-                    <li>Generating password fitting all the criteria. Default password symbols are lowercase letters</li>
-                    <li>Displaying error message instead of a password for options that cannot be fulfilled. The buttons are then hidden</li>
-                    <li>Change of any option instantly generates a new password</li>
-                </ul>
-            </li>
-        </ul>
-        <ul>
-            <li>
                 Password list:
                 <ul>
                     <li>Passwords are sorted by name and grouped by first letter of a name</li>
@@ -121,9 +86,6 @@
                 <ul>
                     <li>In edit mode the list, adding button and the filter are inactive</li>
                     <li>To the right of the image there are image parameters: Resolution, DPI and Format</li>
-                    <li>"Generate" button below the password. It launches Password Generator window with the "Choose" button on the bottom</li>
-                    <li>Clicking "Choose" button sets the currently generated password in the password field and closes the window</li>
-                    <li>If the generator window is closed then the password is not set</li>
                     <li>Button on the bottom of the view change to "Apply" and "Cancel"</li>
                     <li>"Apply" button updates the password and switches back to view mode. If any changes were made, then the "Last edit time" is updated</li>
                     <li>"Cancel" button switches back to view mode without modifying the password data</li>
@@ -136,7 +98,7 @@
 
                 <ul>
                     <li>
-                        BinaryFormatter, MemoryStream, ICommand, DependencyProperty.RegisterAttached, ShowDialog, CollectionViewSource, GroupStyle, ContentControl
+                        BinaryFormatter, MemoryStream, ICommand, DependencyProperty.RegisterAttached, CollectionViewSource, GroupStyle, ContentControl, OpenFileDialog, SaveFileDialog, DataTemplate
                     </li>
                 </ul>
             </li>
@@ -146,11 +108,11 @@
 
                 <ul>
                     <li>Serialization and encryption <strong>2p</strong></li>
-                    <li>Tree view <strong>1p</strong></li>
+                    <li>Tree view <strong>2p</strong></li>
                     <li>Image file <strong>1p</strong></li>
-                    <li>Password generator <strong>3p</strong></li>
-                    <li>Password list <strong>2p</strong></li>
-                    <li>Password viewer and editor <strong>3p</strong></li>
+                    <li>Password list <strong>3p</strong></li>
+                    <li>Password viewer <strong>2p</strong></li>
+                    <li>Password editor <strong>2p</strong></li>
                 </ul>
             </li>
         </ul>
