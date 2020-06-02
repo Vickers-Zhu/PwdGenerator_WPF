@@ -66,12 +66,15 @@ namespace WPF_Project
         }
         public void AddPwd(object obj)
         {
-            this.SelectedPwdItem.Passwords.Add(new Items.Pwd());
+            this.SelectedPwdItem.Passwords.Add(new Items.Pwd() 
+            {
+                Name = "Account Name"
+            });
         }
 
         public void PickIcon(object obj) 
         {
-            System.Windows.Forms.OpenFileDialog op = new System.Windows.Forms.OpenFileDialog();
+            OpenFileDialog op = new OpenFileDialog();
             op.Title = "Select a picture";
             op.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
             if (op.ShowDialog() == DialogResult.OK)

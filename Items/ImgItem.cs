@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace WPF_Project
 {
@@ -12,9 +13,7 @@ namespace WPF_Project
         public static int Count { get; set; }
         private string header;
         private bool isEditable = false;
-        public ImgItem(ObservableCollection<BaseItem> Parent) : base(Parent)
-        {
-        }
+        private BitmapImage image;
         public string Header
         {
             get => header;
@@ -32,6 +31,14 @@ namespace WPF_Project
             {
                 isEditable = value;
                 OnPropertyChanged("IsEditable");
+            }
+        }
+        public BitmapImage Image 
+        {
+            get => image;
+            set
+            {
+                image = value;
             }
         }
     }

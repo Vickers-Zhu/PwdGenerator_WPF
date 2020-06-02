@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPF_Project"
+      xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase" 
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Pwd"
@@ -12,7 +13,20 @@
         <local:StrenthValueConverter x:Key="strenthValueConverter" />
         <local:PwdColorConverter x:Key="pwdColorConverter" />
         <local:StrenthTextConverter x:Key="strenthTextConverter" />
-        <DataTemplate x:Key="pwdItem">
+        <local:FirstLetterConverter x:Key="FirstLetterConv" />
+        <CollectionViewSource 
+            x:Key="PwdsView" 
+            Source="{Binding Path=Passwords, Mode=TwoWay}">
+            <!-- Sorting -->
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="Name" />
+            </CollectionViewSource.SortDescriptions>
+            <!-- Grouping -->
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Name" Converter="{StaticResource ResourceKey=FirstLetterConv}" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        <DataTemplate x:Key="pwdItem" DataType="{x:Type local:Pwd}">
             <Border BorderThickness="2" BorderBrush="AliceBlue">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -39,6 +53,9 @@
                 </Grid>
             </Border>
         </DataTemplate>
+        <DataTemplate x:Key="GroupingHeader">
+            <TextBlock Text="{Binding Path=Name}" Background="Black" Foreground="White" />
+        </DataTemplate>
         <Style x:Key="Label" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -57,10 +74,19 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Button Content="Add" Command="{Binding OnePwdAddCommand}" />
-            <ListBox x:Name="PwdList" Grid.Row="1" ItemsSource="{Binding Path=Passwords, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True"
-                     ItemTemplate="{StaticResource ResourceKey=pwdItem}"                   
-                     SelectionChanged="PwdList_SelectionChanged"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="SearchBox" Width="200" Text="Search" TextChanged="Search_TextChanged"/>
+                <Button Content="Add" Command="{Binding OnePwdAddCommand}" />
+            </StackPanel>
+            <ListBox x:Name="PwdList" Grid.Row="1" ItemsSource="{Binding Source={StaticResource PwdsView}}" 
+                     IsSynchronizedWithCurrentItem="True"
+                     SelectionChanged="PwdList_SelectionChanged"
+                     ItemTemplate="{StaticResource ResourceKey=pwdItem}">
+                <ListBox.GroupStyle>
+                    <GroupStyle 
+                     HeaderTemplate="{StaticResource ResourceKey=GroupingHeader}" />
+                </ListBox.GroupStyle>
+            </ListBox>
         </Grid>
         <GridSplitter Grid.Column="0" Visibility="Visible" Panel.ZIndex="1"/>
         <Grid Grid.Column="2">

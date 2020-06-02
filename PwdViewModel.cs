@@ -7,6 +7,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.Text;
 using System.IO;
+using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 
 namespace WPF_Project
 {
@@ -19,10 +21,13 @@ namespace WPF_Project
         private ICommand pwdAddInsideCommand;
         private ICommand imgAddInsideCommand;
         private ICommand saveData;
+        private ICommand loadData;
+        private ICommand imgAddingCommand;
         private static ObservableCollection<BaseItem> items;
         private static DirItem selectedDirItem;
         private static PwdItem selectedPwdItem;
         private static ImgItem selectedImgItem;
+        private static string passphrase;
         public ObservableCollection<BaseItem> Items
         {
             get
@@ -71,6 +76,14 @@ namespace WPF_Project
             }
         }
 
+        public string Passphrase 
+        {
+            get => passphrase;
+            set 
+            {
+                passphrase = value;
+            }
+        }
         public ICommand DirAddCommand
         {
             get => dirAddCommand;
@@ -127,6 +140,22 @@ namespace WPF_Project
                 saveData = value;
             }
         }
+        public ICommand LoadData 
+        {
+            get => loadData;
+            set 
+            {
+                loadData = value;
+            }
+        }
+        public ICommand ImgAddingCommand 
+        {
+            get => imgAddCommand;
+            set 
+            {
+                imgAddCommand = value;
+            }     
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public PwdViewModel()
@@ -149,87 +178,134 @@ namespace WPF_Project
 
         public void DirAdd(object obj)
         {
-            Items.Add(new DirItem(Items)
+            Items.Add(new DirItem()
             {
                 Header = "New Directory " + (++DirItem.Count).ToString(),
+                Parent = Items
             });
         }
         public void PwdAdd(object obj)
         {
-            Items.Add(new PwdItem(Items)
+            Items.Add(new PwdItem()
             {
-                Header = "New Password " + (++PwdItem.Count).ToString()
+                Header = "New Password " + (++PwdItem.Count).ToString(),
+                Parent = Items
             });
         }
         public void ImgAdd(object obj)
         {
-            Items.Add(new ImgItem(Items)
+            BitmapImage image = ImageAdding(null);
+            if (image is null) return;
+            Items.Add(new ImgItem()
             {
-                Header = "New Image " + (++ImgItem.Count).ToString()
+                Header = "New Image " + (++ImgItem.Count).ToString(),
+                Parent = Items,
+                Image = image
             });
         }
 
         public void DirAddInside(object obj)
         {
-            selectedDirItem.Items.Add(new DirItem(selectedDirItem.Items)
+            selectedDirItem.Items.Add(new DirItem()
             {
-                Header = "New Directory " + (++DirItem.Count).ToString()
+                Header = "New Directory " + (++DirItem.Count).ToString(),
+                Parent = selectedDirItem.Items
             });
         }
         public void PwdAddInside(object obj)
         {
-            selectedDirItem.Items.Add(new PwdItem(selectedDirItem.Items)
+            selectedDirItem.Items.Add(new PwdItem()
             {
-                Header = "New Password " + (++PwdItem.Count).ToString()
+                Header = "New Password " + (++PwdItem.Count).ToString(),
+                Parent = selectedDirItem.Items
             });
         }
         public void ImgAddInside(object obj)
         {
-            selectedDirItem.Items.Add(new ImgItem(selectedDirItem.Items)
+            BitmapImage image = ImageAdding(null);
+            if (image is null) return;
+            selectedDirItem.Items.Add(new ImgItem()
             {
-                Header = "New Image " + (++ImgItem.Count).ToString()
+                Header = "New Image " + (++ImgItem.Count).ToString(),
+                Parent = selectedDirItem.Items,
+                Image = image
             });
         }
 
         public void Save(object obj)
         {
-            UnicodeEncoding uniEncoding = new UnicodeEncoding();
             BinaryFormatter formatter = new BinaryFormatter();
-            MemoryStream memStream = new MemoryStream(10);
-            //formatter.Serialize(memStream, "asdasd");
-            //int count = 0;
-            //byte[] byteArray = new byte[memStream.Length];
-            //memStream.Seek(0, SeekOrigin.Begin);
-            //while (count < memStream.Length) 
-            //{
-            //    byteArray[count++] = Convert.ToByte(memStream.ReadByte());
-            //}
+            MemoryStream memStream = new MemoryStream(100000);
+            int count = 0;
+            byte[] byteArray;
+            try
+            {
+                formatter.Serialize(memStream, Items);
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to serialize. Reason: " + e.Message);
+                throw;
+            }
+            finally
+            {
+                byteArray = new byte[memStream.Length];
+                memStream.Seek(0, SeekOrigin.Begin);
+                while (count < memStream.Length)
+                {
+                    byteArray[count++] = Convert.ToByte(memStream.ReadByte());
+                }
 
-            //string result = (string)formatter.Deserialize(memStream);
-            //Console.WriteLine(result);
-
-            //byte[] bt = { 1, 2, 3, 5, 6 };
-            //string st = "asdasd";
-            //Console.WriteLine(Encoding.UTF8.GetString(DataEncryption.Decrypt(st, DataEncryption.Encrypt(st, bt))));
+                memStream.Close();
+            }
+            byte[] encryptedBytes = DataEncryption.Encrypt("qweasdzxc", byteArray);
+            using (FileStream fs = new FileStream("Passwords.bin", FileMode.Create))
+            {
+                for (int i = 0; i < encryptedBytes.Length; i++) 
+                {
+                    fs.WriteByte(encryptedBytes[i]);
+                }
+            }
         }
-
+        public static ObservableCollection<BaseItem> Load()
+        {
+            byte[] dataArray = System.IO.File.ReadAllBytes("Passwords.bin");
+            byte[] decryptedBytes = DataEncryption.Decrypt("qweasdzxc", dataArray);
+            MemoryStream memStream = new MemoryStream(100000);
+            memStream.Write(decryptedBytes, 0, decryptedBytes.Length);
+            memStream.Seek(0, SeekOrigin.Begin);
+            ObservableCollection<BaseItem> result;
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                result = formatter.Deserialize(memStream) as ObservableCollection<BaseItem>;
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+                throw;
+            }
+            finally
+            {
+                memStream.Close();
+            }
+            return result;
+        }
         public void Delete(object obj) 
         {
             BaseItem item = obj as BaseItem;
             item.Parent.Remove(item);
         }
-
-        private void DeleteItem(BaseItem item, ObservableCollection<BaseItem> its) 
+        public BitmapImage ImageAdding(object obj)
         {
-            //if (its == null) return;
-            //if (its.Remove(item)) return;
-            //if (item is DirItem)
-            //    for (int i = 0; i < its.Count; i++) 
-            //        DeleteItem(item, ((DirItem)item).Items);
-        }
-        public void Load() 
-        {
-        
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+            if (op.ShowDialog() == DialogResult.OK)
+            {
+                return new BitmapImage(new Uri(op.FileName, UriKind.Absolute));
+            }
+            return null;
         }
     }
 }

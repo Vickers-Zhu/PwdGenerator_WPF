@@ -24,11 +24,28 @@ namespace WPF_Project
     {
         public Pwd()
         {
-            InitializeComponent();          
+            InitializeComponent();
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(PwdList.ItemsSource);
+            view.Filter = UserFilter;
+
         }
         private void PwdList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ((PwdEditorViewMode)this.DataContext).SelectedPwd = (Items.Pwd)this.PwdList.SelectedItem;
+        }
+
+        private void Search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (PwdList is null) return;
+            CollectionViewSource.GetDefaultView(PwdList.ItemsSource).Refresh();
+        }
+
+        private bool UserFilter(object item)
+        {
+            if (String.IsNullOrEmpty(SearchBox.Text))
+                return true;
+            else
+                return ((item as Items.Pwd).Name.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
         }
     }
 }

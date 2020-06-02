@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 
 namespace WPF_Project
 {
@@ -12,9 +13,7 @@ namespace WPF_Project
         public static int Count { get; set; }
         private string header;
         private bool isEditable = false;
-        public DirItem(ObservableCollection<BaseItem> Parent) : base(Parent)
-        {
-        }        
+        private ObservableCollection<BaseItem> items;
         public string Header
         {
             get => header;
@@ -34,7 +33,6 @@ namespace WPF_Project
                 OnPropertyChanged("IsEditable");
             }
         }
-        private ObservableCollection<BaseItem> items;
         public ObservableCollection<BaseItem> Items 
         {
             get 
@@ -51,6 +49,5 @@ namespace WPF_Project
                 OnPropertyChanged("DirItems");
             }
         }
-
     }
 }

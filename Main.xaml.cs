@@ -30,6 +30,10 @@ namespace WPF_Project
             PwdItem.Count = 0;
             ImgItem.Count = 0;           
         }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((PwdViewModel)this.DataContext).Items = PwdViewModel.Load();
+        }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("Login.xaml", UriKind.Relative));

@@ -76,12 +76,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\EditableConverter.cs" />
+    <Compile Include="Converters\FirstLetterConverter .cs" />
     <Compile Include="Converters\PwdColorConverter.cs" />
     <Compile Include="Converters\StrenthTextConverter.cs" />
     <Compile Include="Converters\StrenthValueConverter.cs" />
     <Compile Include="Dir.xaml.cs">
       <DependentUpon>Dir.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageViewMode.cs" />
     <Compile Include="Img.xaml.cs">
       <DependentUpon>Img.xaml</DependentUpon>
     </Compile>
