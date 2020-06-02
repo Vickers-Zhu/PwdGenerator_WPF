@@ -41,3 +41,4 @@ C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\Pwd.g.cs
 C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\Dir.baml
 C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\Img.baml
 C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\Pwd.baml
+C:\Users\VickersZhu\Documents\GitHub\PwdGenerator_WPF\obj\Debug\WPF_Project.csprojAssemblyReference.cache

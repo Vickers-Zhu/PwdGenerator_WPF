@@ -12,10 +12,22 @@ namespace WPF_Project
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is null) return null;
-            if (value is DirItem) return "Dir.xaml";
-            if (value is ImgItem) return "Img.xaml";
-            if (value is PwdItem) return "Pwd.xaml";
+            if (value is null) 
+            {
+                return null;
+            }
+            if (value is DirItem) 
+            {
+                return new Uri("Dir.xaml", UriKind.Relative);
+            }
+            if (value is ImgItem) 
+            {
+                return new Uri("Img.xaml", UriKind.Relative);
+            }
+            if (value is PwdItem) 
+            {
+                return new Uri("Pwd.xaml", UriKind.Relative);
+            }
             throw new Exception("Failed to change page");
         }
 

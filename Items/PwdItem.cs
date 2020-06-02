@@ -11,6 +11,18 @@ namespace WPF_Project
     public class PwdItem : BaseItem
     {
         public static int Count { get; set; }
+        private string header;
+
+        public string Header
+        {
+            get => header;
+
+            set
+            {
+                header = value;
+                OnPropertyChanged("Header");
+            }
+        }
 
         private ObservableCollection<Items.Pwd> passwords;
         public ObservableCollection<Items.Pwd> Passwords

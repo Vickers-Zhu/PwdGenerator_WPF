@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using WPF_Project;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using System.Text;
+using System.IO;
 
 namespace WPF_Project
 {
@@ -16,55 +15,129 @@ namespace WPF_Project
         private ICommand dirAddCommand;
         private ICommand pwdAddCommand;
         private ICommand imgAddCommand;
+        private ICommand dirAddInsideCommand;
+        private ICommand pwdAddInsideCommand;
+        private ICommand imgAddInsideCommand;
+        private ICommand saveData;
         private static ObservableCollection<BaseItem> items;
-        public ObservableCollection<BaseItem> Items 
+        private static DirItem selectedDirItem;
+        private static PwdItem selectedPwdItem;
+        private static ImgItem selectedImgItem;
+        public ObservableCollection<BaseItem> Items
         {
-            get 
+            get
             {
                 if (items is null)
+                    //items = new DirItem();
                     items = new ObservableCollection<BaseItem>();
                 return items;
             }
-            set 
+            set
             {
                 items = value;
                 OnPropertyChanged("Items");
             }
         }
+        public DirItem SelectedDirItem
+        {
+            get => selectedDirItem;
+            set 
+            {
+                selectedDirItem = value;
+                OnPropertyChanged("SelectedDirItem");
+            }
+            
+        }
+        public PwdItem SelectedPwdItem
+        {
+            get => selectedPwdItem;
+            set
+            {
+                selectedPwdItem = value;
+                OnPropertyChanged("SelectedPwdItem");
+            }
+        }
 
-        public ICommand DirAddCommand 
+        public ImgItem SelectedImgItem 
+        {
+            get => selectedImgItem;
+            set 
+            {
+                selectedImgItem = value;
+                OnPropertyChanged("SelectedImgItem");
+            }
+        }
+
+        public ICommand DirAddCommand
         {
             get => dirAddCommand;
-            set 
+            set
             {
                 dirAddCommand = value;
             }
         }
-        public ICommand PwdAddCommand 
+        public ICommand PwdAddCommand
         {
             get => pwdAddCommand;
-            set 
+            set
             {
                 pwdAddCommand = value;
             }
         }
-        public ICommand ImgAddCommand 
+        public ICommand ImgAddCommand
         {
             get => imgAddCommand;
-            set 
+            set
             {
                 imgAddCommand = value;
             }
         }
+        public ICommand DirAddInsideCommand 
+        {
+            get => dirAddInsideCommand;
+            set 
+            {
+                dirAddInsideCommand = value;
+            }
+        }
+        public ICommand PwdAddInsideCommand
+        {
+            get => pwdAddInsideCommand;
+            set
+            {
+                pwdAddInsideCommand = value;
+            }
+        }
+        public ICommand ImgAddInsideCommand
+        {
+            get => imgAddInsideCommand;
+            set
+            {
+                imgAddInsideCommand = value;
+            }
+        }
+
+        public ICommand SaveData
+        {
+            get => saveData;
+            set
+            {
+                saveData = value;
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PwdViewModel() 
+        public PwdViewModel()
         {
             DirAddCommand = new RelayCommand(DirAdd);
             PwdAddCommand = new RelayCommand(PwdAdd);
             ImgAddCommand = new RelayCommand(ImgAdd);
+            DirAddInsideCommand = new RelayCommand(DirAddInside);
+            PwdAddInsideCommand = new RelayCommand(PwdAddInside);
+            ImgAddInsideCommand = new RelayCommand(ImgAddInside);
+            SaveData = new RelayCommand(Save);
         }
-        private void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
             {
@@ -72,23 +145,74 @@ namespace WPF_Project
             }
         }
 
-        public void DirAdd(object obj) 
+        public void DirAdd(object obj)
         {
-            BaseItem item = new DirItem();
-            item.Header = "New Directory " + (++DirItem.Count).ToString();
-            Items.Add(item);
-        }        
-        public void PwdAdd(object obj) 
+            Items.Add(new DirItem 
+            {
+                Header = "New Directory " + (++DirItem.Count).ToString()
+            });
+        }
+        public void PwdAdd(object obj)
         {
-            BaseItem item = new PwdItem();
-            item.Header = "New Password " + (++PwdItem.Count).ToString();
-            Items.Add(item);
-        }        
-        public void ImgAdd(object obj) 
+            Items.Add(new PwdItem
+            {
+                Header = "New Password " + (++PwdItem.Count).ToString()
+            });
+        }
+        public void ImgAdd(object obj)
         {
-            BaseItem item = new ImgItem();
-            item.Header = "New Image " + (++ImgItem.Count).ToString();
-            Items.Add(item);
+            Items.Add(new ImgItem
+            {
+                Header = "New Image " + (++ImgItem.Count).ToString()
+            });
+        }
+
+        public void DirAddInside(object obj)
+        {
+            selectedDirItem.Items.Add(new DirItem
+            {
+                Header = "New Directory " + (++DirItem.Count).ToString()
+            });
+        }
+        public void PwdAddInside(object obj)
+        {
+            selectedDirItem.Items.Add(new PwdItem
+            {
+                Header = "New Password " + (++PwdItem.Count).ToString()
+            });
+        }
+        public void ImgAddInside(object obj)
+        {
+            selectedDirItem.Items.Add(new ImgItem
+            {
+                Header = "New Image " + (++ImgItem.Count).ToString()
+            });
+        }
+
+        public void Save(object obj)
+        {
+            UnicodeEncoding uniEncoding = new UnicodeEncoding();
+            BinaryFormatter formatter = new BinaryFormatter();
+            MemoryStream memStream = new MemoryStream(10);
+            //formatter.Serialize(memStream, "asdasd");
+            //int count = 0;
+            //byte[] byteArray = new byte[memStream.Length];
+            //memStream.Seek(0, SeekOrigin.Begin);
+            //while (count < memStream.Length) 
+            //{
+            //    byteArray[count++] = Convert.ToByte(memStream.ReadByte());
+            //}
+
+            //string result = (string)formatter.Deserialize(memStream);
+            //Console.WriteLine(result);
+
+            //byte[] bt = { 1, 2, 3, 5, 6 };
+            //string st = "asdasd";
+            //Console.WriteLine(Encoding.UTF8.GetString(DataEncryption.Decrypt(st, DataEncryption.Encrypt(st, bt))));
+        }
+        public void Load() 
+        {
+        
         }
     }
 }

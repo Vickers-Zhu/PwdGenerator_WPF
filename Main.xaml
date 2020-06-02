@@ -31,7 +31,7 @@
             <Menu DockPanel.Dock="Top" HorizontalAlignment="Right">
                 <MenuItem Style="{StaticResource MenuItem}" Header="Password Generator" />
                 <MenuItem Style="{StaticResource MenuItem}" Header="Log out" Click="MenuItem_Click" />
-                <MenuItem Style="{StaticResource MenuItem}" Header="Save"/>
+                <MenuItem Style="{StaticResource MenuItem}" Header="Save" Command="{Binding SaveData}"/>
             </Menu>
         </DockPanel>
         <Grid Grid.Row="1">
@@ -40,30 +40,57 @@
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
-            <TreeView Grid.Column="0" x:Name="TreeView" ItemsSource="{Binding Items}">
-                <TreeView.ContextMenu>
-                    <ContextMenu>
+            <TreeView Grid.Column="0" x:Name="TreeView" ItemsSource="{Binding Items}"
+                      SelectedItemChanged="TreeView_SelectedItemChanged"
+                      MouseRightButtonDown="TreeView_MouseRightButtonDown">
+                <TreeView.Resources>
+                    <ContextMenu x:Key="DefaultContextMenu">
                         <MenuItem Header="Add Directory" Command="{Binding DirAddCommand}" />
                         <MenuItem Header="Add file">
                             <MenuItem Header="Passwords" Command="{Binding PwdAddCommand}"/>
                             <MenuItem Header="Image" Command="{Binding ImgAddCommand}" />
                         </MenuItem>
                     </ContextMenu>
-                </TreeView.ContextMenu>
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type local:DirItem}">
+                    <ContextMenu x:Key="DirContextMenu">
+                        <MenuItem Header="New Directory" IsEnabled="False"/>
+                        <Separator />
+                        <MenuItem Header="Add Directory" Command="{Binding DirAddInsideCommand}"/>
+                        <MenuItem Header="Add Files">
+                            <MenuItem Header="Passwords" Command="{Binding PwdAddInsideCommand}" />
+                            <MenuItem Header="Image" Command="{Binding ImgAddInsideCommand}"/>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Rename" />
+                        <MenuItem Header="Delete" />
+                    </ContextMenu>
+                    <ContextMenu x:Key="PwdContextMenu">
+                        <MenuItem Header="New Password" IsEnabled="False"/>
+                        <Separator />
+                        <MenuItem Header="Rename" />
+                        <MenuItem Header="Delete" />
+                    </ContextMenu>
+                    <ContextMenu x:Key="ImgContextMenu">
+                        <MenuItem Header="New Image" IsEnabled="False"/>
+                        <Separator />
+                        <MenuItem Header="Rename" />
+                        <MenuItem Header="Delete" />
+                    </ContextMenu>
+                    <HierarchicalDataTemplate DataType="{x:Type local:DirItem}" 
+                                              ItemsSource="{Binding Path=Items}" >
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Header}" Style="{StaticResource DirItem}" />
+                            <TextBlock Text="{Binding Header, Mode=TwoWay}" Style="{StaticResource DirItem}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type local:PwdItem}">
+                    <HierarchicalDataTemplate DataType="{x:Type local:PwdItem}"
+                                              ItemsSource="{Binding Path=Items}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Header}" Style="{StaticResource OtherItem}" />
+                            <TextBlock Text="{Binding Header, Mode=TwoWay}" Style="{StaticResource OtherItem}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type local:ImgItem}">
+                    <HierarchicalDataTemplate DataType="{x:Type local:ImgItem}"
+                                              ItemsSource="{Binding Path=Items}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Header}" Style="{StaticResource OtherItem}" />
+                            <TextBlock Text="{Binding Header, Mode=TwoWay}" Style="{StaticResource OtherItem}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
@@ -71,10 +98,7 @@
             <GridSplitter Grid.Column="1"/>
             <DockPanel Grid.Column="2">
                 <Frame Source="{Binding ElementName=TreeView, Path=SelectedItem, Converter={StaticResource viewConverter}}" 
-                       x:Name="_NavigationFrame" NavigationUIVisibility="Hidden" 
-                       DataContext="{Binding ElementName=TreeView, Path=SelectedItem, Mode=OneWay}"
-                       LoadCompleted="frame_LoadCompleted"
-                       DataContextChanged="frame_DataContextChanged"
+                       x:Name="_NavigationFrame" NavigationUIVisibility="Hidden"      
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </DockPanel>
         </Grid>
