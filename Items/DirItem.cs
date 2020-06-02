@@ -11,7 +11,10 @@ namespace WPF_Project
     {
         public static int Count { get; set; }
         private string header;
-
+        private bool isEditable = false;
+        public DirItem(ObservableCollection<BaseItem> Parent) : base(Parent)
+        {
+        }        
         public string Header
         {
             get => header;
@@ -22,12 +25,24 @@ namespace WPF_Project
                 OnPropertyChanged("Header");
             }
         }
+        public bool IsEditable 
+        {
+            get => isEditable;
+            set 
+            {
+                isEditable = value;
+                OnPropertyChanged("IsEditable");
+            }
+        }
         private ObservableCollection<BaseItem> items;
         public ObservableCollection<BaseItem> Items 
         {
             get 
             {
-                if (items is null) items = new ObservableCollection<BaseItem>();
+                if (items is null) 
+                {
+                    items = new ObservableCollection<BaseItem>();
+                }
                 return items;
             }
             set 

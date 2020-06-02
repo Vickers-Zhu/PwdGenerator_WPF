@@ -41,28 +41,31 @@ namespace WPF_Project
         public DirItem SelectedDirItem
         {
             get => selectedDirItem;
-            set 
+            set
             {
+                if (value is null && selectedDirItem != null) selectedDirItem.IsEditable = false;
                 selectedDirItem = value;
                 OnPropertyChanged("SelectedDirItem");
             }
-            
+
         }
         public PwdItem SelectedPwdItem
         {
             get => selectedPwdItem;
             set
             {
+                if (value is null && selectedPwdItem != null) selectedPwdItem.IsEditable = false;
                 selectedPwdItem = value;
                 OnPropertyChanged("SelectedPwdItem");
             }
         }
 
-        public ImgItem SelectedImgItem 
+        public ImgItem SelectedImgItem
         {
             get => selectedImgItem;
-            set 
+            set
             {
+                if (value is null && selectedImgItem != null) selectedImgItem.IsEditable = false;
                 selectedImgItem = value;
                 OnPropertyChanged("SelectedImgItem");
             }
@@ -92,10 +95,10 @@ namespace WPF_Project
                 imgAddCommand = value;
             }
         }
-        public ICommand DirAddInsideCommand 
+        public ICommand DirAddInsideCommand
         {
             get => dirAddInsideCommand;
-            set 
+            set
             {
                 dirAddInsideCommand = value;
             }
@@ -116,7 +119,6 @@ namespace WPF_Project
                 imgAddInsideCommand = value;
             }
         }
-
         public ICommand SaveData
         {
             get => saveData;
@@ -147,21 +149,21 @@ namespace WPF_Project
 
         public void DirAdd(object obj)
         {
-            Items.Add(new DirItem 
+            Items.Add(new DirItem(Items)
             {
-                Header = "New Directory " + (++DirItem.Count).ToString()
+                Header = "New Directory " + (++DirItem.Count).ToString(),
             });
         }
         public void PwdAdd(object obj)
         {
-            Items.Add(new PwdItem
+            Items.Add(new PwdItem(Items)
             {
                 Header = "New Password " + (++PwdItem.Count).ToString()
             });
         }
         public void ImgAdd(object obj)
         {
-            Items.Add(new ImgItem
+            Items.Add(new ImgItem(Items)
             {
                 Header = "New Image " + (++ImgItem.Count).ToString()
             });
@@ -169,21 +171,21 @@ namespace WPF_Project
 
         public void DirAddInside(object obj)
         {
-            selectedDirItem.Items.Add(new DirItem
+            selectedDirItem.Items.Add(new DirItem(selectedDirItem.Items)
             {
                 Header = "New Directory " + (++DirItem.Count).ToString()
             });
         }
         public void PwdAddInside(object obj)
         {
-            selectedDirItem.Items.Add(new PwdItem
+            selectedDirItem.Items.Add(new PwdItem(selectedDirItem.Items)
             {
                 Header = "New Password " + (++PwdItem.Count).ToString()
             });
         }
         public void ImgAddInside(object obj)
         {
-            selectedDirItem.Items.Add(new ImgItem
+            selectedDirItem.Items.Add(new ImgItem(selectedDirItem.Items)
             {
                 Header = "New Image " + (++ImgItem.Count).ToString()
             });
@@ -209,6 +211,21 @@ namespace WPF_Project
             //byte[] bt = { 1, 2, 3, 5, 6 };
             //string st = "asdasd";
             //Console.WriteLine(Encoding.UTF8.GetString(DataEncryption.Decrypt(st, DataEncryption.Encrypt(st, bt))));
+        }
+
+        public void Delete(object obj) 
+        {
+            BaseItem item = obj as BaseItem;
+            item.Parent.Remove(item);
+        }
+
+        private void DeleteItem(BaseItem item, ObservableCollection<BaseItem> its) 
+        {
+            //if (its == null) return;
+            //if (its.Remove(item)) return;
+            //if (item is DirItem)
+            //    for (int i = 0; i < its.Count; i++) 
+            //        DeleteItem(item, ((DirItem)item).Items);
         }
         public void Load() 
         {

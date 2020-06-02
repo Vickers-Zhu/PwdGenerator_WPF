@@ -21,6 +21,7 @@
         <Style x:Key="OtherItem" TargetType="TextBlock">
             <Setter Property="FontStyle" Value="Italic"/>
         </Style>
+        <local:EditableConverter x:Key="editableConverter" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -60,38 +61,104 @@
                             <MenuItem Header="Image" Command="{Binding ImgAddInsideCommand}"/>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="Rename" />
-                        <MenuItem Header="Delete" />
+                        <MenuItem Header="Rename" Click="Rename_Click"/>
+                        <MenuItem Header="Delete" Click="Delete_Click"/>
                     </ContextMenu>
                     <ContextMenu x:Key="PwdContextMenu">
                         <MenuItem Header="New Password" IsEnabled="False"/>
                         <Separator />
-                        <MenuItem Header="Rename" />
-                        <MenuItem Header="Delete" />
+                        <MenuItem Header="Rename" Click="Rename_Click"/>
+                        <MenuItem Header="Delete" Click="Delete_Click"/>
                     </ContextMenu>
                     <ContextMenu x:Key="ImgContextMenu">
                         <MenuItem Header="New Image" IsEnabled="False"/>
                         <Separator />
-                        <MenuItem Header="Rename" />
-                        <MenuItem Header="Delete" />
+                        <MenuItem Header="Rename" Click="Rename_Click"/>
+                        <MenuItem Header="Delete" Click="Delete_Click"/>
                     </ContextMenu>
+                    <DataTemplate x:Key="NormalOtherTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Header, Mode=TwoWay}" Style="{StaticResource OtherItem}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="NormalDirTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Header, Mode=TwoWay}" Style="{StaticResource DirItem}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="EditableTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox  Text="{Binding Header, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </DataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type local:DirItem}" 
                                               ItemsSource="{Binding Path=Items}" >
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Header, Mode=TwoWay}" Style="{StaticResource DirItem}" />
-                        </StackPanel>
+                        <ContentPresenter Content="{Binding}">
+                            <ContentPresenter.Style>
+                                <Style TargetType="{x:Type ContentPresenter}">
+                                    <Setter Property="ContentTemplate"
+                                            Value="{StaticResource NormalDirTemplate}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource editableConverter}">
+                                                    <Binding Path="IsSelected" 
+                                                             RelativeSource="{RelativeSource AncestorType=TreeViewItem}" />
+                                                    <Binding Path="IsEditable"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="ContentTemplate" Value="{StaticResource EditableTemplate}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentPresenter.Style>
+                        </ContentPresenter>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type local:PwdItem}"
-                                              ItemsSource="{Binding Path=Items}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Header, Mode=TwoWay}" Style="{StaticResource OtherItem}" />
-                        </StackPanel>
+                                              >
+                        <ContentPresenter Content="{Binding}">
+                            <ContentPresenter.Style>
+                                <Style TargetType="{x:Type ContentPresenter}">
+                                    <Setter Property="ContentTemplate"
+                                            Value="{StaticResource NormalOtherTemplate}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource editableConverter}">
+                                                    <Binding Path="IsSelected" 
+                                                             RelativeSource="{RelativeSource AncestorType=TreeViewItem}" />
+                                                    <Binding Path="IsEditable"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="ContentTemplate" Value="{StaticResource EditableTemplate}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentPresenter.Style>
+                        </ContentPresenter>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type local:ImgItem}"
-                                              ItemsSource="{Binding Path=Items}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Header, Mode=TwoWay}" Style="{StaticResource OtherItem}" />
-                        </StackPanel>
+                                              >
+                        <ContentPresenter Content="{Binding}">
+                            <ContentPresenter.Style>
+                                <Style TargetType="{x:Type ContentPresenter}">
+                                    <Setter Property="ContentTemplate"
+                                            Value="{StaticResource NormalOtherTemplate}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource editableConverter}">
+                                                    <Binding Path="IsSelected" 
+                                                             RelativeSource="{RelativeSource AncestorType=TreeViewItem}" />
+                                                    <Binding Path="IsEditable"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="ContentTemplate" Value="{StaticResource EditableTemplate}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentPresenter.Style>
+                        </ContentPresenter>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>

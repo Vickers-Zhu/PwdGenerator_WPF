@@ -87,5 +87,25 @@ namespace WPF_Project
                 source = VisualTreeHelper.GetParent(source);
             return source as TreeViewItem;
         }
+        private void Rename_Click(object sender, RoutedEventArgs e)
+        {
+            if (TreeView.SelectedItem is PwdItem)
+            {
+                ((PwdViewModel)this.DataContext).SelectedPwdItem.IsEditable = true;
+            }
+            else if (TreeView.SelectedItem is DirItem)
+            {
+                ((PwdViewModel)this.DataContext).SelectedDirItem.IsEditable = true;
+            }
+            else if (TreeView.SelectedItem is ImgItem)
+            {
+                ((PwdViewModel)this.DataContext).SelectedImgItem.IsEditable = true;
+            }
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            ((PwdViewModel)this.DataContext).Delete(this.TreeView.SelectedItem as BaseItem);
+        }
     }
 }

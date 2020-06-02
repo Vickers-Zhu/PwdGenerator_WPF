@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -7,10 +8,14 @@ using System.Threading.Tasks;
 
 namespace WPF_Project
 {
-    public class BaseItem : INotifyPropertyChanged
+    public abstract class BaseItem : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
+        public ObservableCollection<BaseItem> Parent { get; }
+        public BaseItem(ObservableCollection<BaseItem> Parent) 
+        {
+            this.Parent = Parent;
+        }
         protected void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)

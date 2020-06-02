@@ -12,6 +12,10 @@ namespace WPF_Project
     {
         public static int Count { get; set; }
         private string header;
+        private bool isEditable = false;
+        public PwdItem(ObservableCollection<BaseItem> Parent) : base(Parent)
+        {
+        }
 
         public string Header
         {
@@ -23,8 +27,18 @@ namespace WPF_Project
                 OnPropertyChanged("Header");
             }
         }
+        public bool IsEditable
+        {
+            get => isEditable;
+            set
+            {
+                isEditable = value;
+                OnPropertyChanged("IsEditable");
+            }
+        }
 
         private ObservableCollection<Items.Pwd> passwords;
+
         public ObservableCollection<Items.Pwd> Passwords
         {
             get 
