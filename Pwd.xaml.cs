@@ -28,7 +28,10 @@ namespace WPF_Project
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(PwdList.ItemsSource);
             view.Filter = UserFilter;
             
-
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((PwdEditorViewMode)this.DataContext).IsEditing = false;
         }
         private void PwdList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

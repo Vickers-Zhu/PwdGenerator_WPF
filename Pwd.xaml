@@ -8,7 +8,8 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Pwd"
-      MinHeight="150" MinWidth="300">
+      MinHeight="150" MinWidth="300"
+      Loaded="Page_Loaded">
     <Page.Resources>
         <local:PwdColorConverter x:Key="pwdColorConverter" />
         <local:StrenthTextConverter x:Key="strenthTextConverter" />
@@ -76,7 +77,7 @@
                 <TextBox x:Name="SearchBox" Width="200" Text="" TextChanged="Search_TextChanged"/>
                 <Button Content="Add" Command="{Binding OnePwdAddCommand}" Click="AddPwd_Click"
                         IsEnabled="{Binding IsEditing, Converter={StaticResource reverseBoolenConverter}, 
-                        Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <ListBox x:Name="PwdList" Grid.Row="1" ItemsSource="{Binding Source={StaticResource PwdsView}}" 
                      IsSynchronizedWithCurrentItem="False"

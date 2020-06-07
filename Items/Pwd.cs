@@ -18,6 +18,8 @@ namespace WPF_Project.Items
         private string password;
         private string website;
         private string notes;
+        private DateTime createdTime;
+        private DateTime editedTime;
         public BitmapImage Icon 
         {
             get { return icon; }
@@ -79,6 +81,25 @@ namespace WPF_Project.Items
             {
                 notes = value;
                 OnPropertyChanged("Notes");
+            }
+        }
+
+        public DateTime CreatedTime 
+        {
+            get => createdTime;
+            set 
+            {
+                createdTime = value;
+                OnPropertyChanged("CreatedTime");
+            }
+        }
+        public DateTime EditedTime 
+        {
+            get => editedTime;
+            set 
+            {
+                editedTime = value;
+                OnPropertyChanged("EditedTime");
             }
         }
 

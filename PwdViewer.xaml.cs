@@ -41,5 +41,22 @@ namespace WPF_Project
                 this.NavigationService?.RemoveBackEntry();
             }
         }
+        private void CopyEmail_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetData(DataFormats.Text, 
+                (Object)((PwdViewerViewMode)this.DataContext).Email);
+        }
+
+        private void CopyLogin_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetData(DataFormats.Text,
+                (Object)((PwdViewerViewMode)this.DataContext).Login);
+        }
+
+        private void CopyPwd_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetData(DataFormats.Text,
+                (Object)((PwdViewerViewMode)this.DataContext).Password);
+        }
     }
 }

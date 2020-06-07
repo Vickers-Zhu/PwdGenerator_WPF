@@ -43,6 +43,7 @@ namespace WPF_Project
             ((PwdViewerViewMode)this.DataContext).SelectedPwd.Icon =
                 ((PwdViewerViewMode)this.DataContext).CacheImage;
             ((PwdViewerViewMode)this.DataContext).IsEditing = false;
+            ((PwdViewerViewMode)this.DataContext).SelectedPwd.EditedTime = DateTime.Now;
             this.NavigationService.Navigate(new Uri("PwdViewer.xaml", UriKind.Relative));
         }
     }

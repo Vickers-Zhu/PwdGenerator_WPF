@@ -86,7 +86,8 @@ namespace WPF_Project
         {
             this.SelectedPwdItem.Passwords.Add(new Items.Pwd() 
             {
-                Name = "Account Name"
+                Name = "Account Name",
+                CreatedTime = DateTime.Now
             });
             IsEditing = true;
         }

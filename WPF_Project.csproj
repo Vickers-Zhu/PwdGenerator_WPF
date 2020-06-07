@@ -77,10 +77,13 @@
     </ApplicationDefinition>
     <Compile Include="Converters\EditableConverter.cs" />
     <Compile Include="Converters\FirstLetterConverter .cs" />
+    <Compile Include="Converters\IsCollapsedConverter.cs" />
     <Compile Include="Converters\PwdColorConverter.cs" />
+    <Compile Include="Converters\PwdToChars.cs" />
     <Compile Include="Converters\ReverseBoolenConverter.cs" />
     <Compile Include="Converters\StrenthTextConverter.cs" />
     <Compile Include="Converters\StrenthValueConverter.cs" />
+    <Compile Include="Converters\StringToMailToConverer.cs" />
     <Compile Include="Dir.xaml.cs">
       <DependentUpon>Dir.xaml</DependentUpon>
     </Compile>
