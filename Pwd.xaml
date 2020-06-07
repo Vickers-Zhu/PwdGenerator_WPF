@@ -10,13 +10,13 @@
       Title="Pwd"
       MinHeight="150" MinWidth="300">
     <Page.Resources>
-        <local:StrenthValueConverter x:Key="strenthValueConverter" />
         <local:PwdColorConverter x:Key="pwdColorConverter" />
         <local:StrenthTextConverter x:Key="strenthTextConverter" />
         <local:FirstLetterConverter x:Key="FirstLetterConv" />
+        <local:ReverseBoolenConverter x:Key="reverseBoolenConverter" />
         <CollectionViewSource 
             x:Key="PwdsView" 
-            Source="{Binding Path=Passwords, Mode=TwoWay}">
+            Source="{Binding Path=Passwords, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <!-- Sorting -->
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
@@ -33,33 +33,31 @@
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="{Binding Path=Icon}" Grid.Column="0"/>
+                    <Image Source="{Binding Path=Icon, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0"/>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
-                            <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"/>
                         </Grid>
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" >
-                            <TextBlock Text="{Binding Path=Login}" />
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock Text="         "/>
-                            <TextBlock Text="{Binding Path=Password, Converter={StaticResource strenthTextConverter}}"
-                                       Foreground="{Binding Path=Password, Converter={StaticResource pwdColorConverter}}"
-                                       HorizontalAlignment="Right" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding Path=Password, Converter={StaticResource strenthTextConverter}, 
+                                UpdateSourceTrigger=PropertyChanged}"
+                                Foreground="{Binding Path=Password, Converter={StaticResource pwdColorConverter},
+                                UpdateSourceTrigger=PropertyChanged}"
+                                HorizontalAlignment="Right" TextAlignment="Right"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="GroupingHeader">
-            <TextBlock Text="{Binding Path=Name}" Background="Black" Foreground="White" />
+            <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Background="Gray" Foreground="White" />
         </DataTemplate>
-        <Style x:Key="Label" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
     </Page.Resources>
     <Page.DataContext>
         <local:PwdEditorViewMode />
@@ -75,13 +73,16 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="SearchBox" Width="200" Text="Search" TextChanged="Search_TextChanged"/>
-                <Button Content="Add" Command="{Binding OnePwdAddCommand}" />
+                <TextBox x:Name="SearchBox" Width="200" Text="" TextChanged="Search_TextChanged"/>
+                <Button Content="Add" Command="{Binding OnePwdAddCommand}" Click="AddPwd_Click"
+                        IsEnabled="{Binding IsEditing, Converter={StaticResource reverseBoolenConverter}, 
+                        Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <ListBox x:Name="PwdList" Grid.Row="1" ItemsSource="{Binding Source={StaticResource PwdsView}}" 
-                     IsSynchronizedWithCurrentItem="True"
+                     IsSynchronizedWithCurrentItem="False"
                      SelectionChanged="PwdList_SelectionChanged"
-                     ItemTemplate="{StaticResource ResourceKey=pwdItem}">
+                     ItemTemplate="{StaticResource ResourceKey=pwdItem}"
+                     SelectedItem="{Binding SelectedPwd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListBox.GroupStyle>
                     <GroupStyle 
                      HeaderTemplate="{StaticResource ResourceKey=GroupingHeader}" />
@@ -90,52 +91,12 @@
         </Grid>
         <GridSplitter Grid.Column="0" Visibility="Visible" Panel.ZIndex="1"/>
         <Grid Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
             </Grid.RowDefinitions>
-            <TextBlock Text="Icon" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="0"/>
-            <TextBlock Text="Name" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="1"/>
-            <TextBlock Text="Email" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="2"/>
-            <TextBlock Text="Login" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="3"/>
-            <TextBlock Text="Password" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="4"/>
-            <TextBlock Text="Website" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="5"/>
-            <TextBlock Text="Notes" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="6"/>
-            <Button Command="{Binding SelectIcon}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center">
-                <StackPanel>
-                    <Image Source="{Binding Path=Passwords/Icon}" Stretch="Fill" Width="100" Height="100"/>
-                    <TextBlock Text="Select" />
-                </StackPanel>
-            </Button>
-            <TextBox Text="{Binding Path=Passwords/Name, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"
-                     Margin="5 5 5 5"/>
-            <TextBox Text="{Binding Path=Passwords/Email, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"
-                     FontFamily="Consolas"
-                     Margin="5 5 5 5"/>
-            <TextBox Text="{Binding Path=Passwords/Login, Mode=TwoWay}" Grid.Column="1" Grid.Row="3"
-                     FontFamily="Consolas"
-                     Margin="5 5 5 5"/>
-            <StackPanel Grid.Column="1" Grid.Row="4">
-                <TextBox x:Name="PwdInput" Text="{Binding Path=Passwords/Password, Mode=TwoWay}"
-                        FontFamily="Consolas"
-                        Margin="5 5 5 5" />
-                <ProgressBar Height="15" Minimum="0" Maximum="5"
-                             Value="{Binding ElementName=PwdInput, Path=Text, Converter={StaticResource strenthValueConverter}}" 
-                             Foreground="{Binding ElementName=PwdInput, Path=Text, Converter={StaticResource pwdColorConverter}}"/>
-            </StackPanel>
-            <TextBox Text="{Binding Path=Passwords/Website, Mode=TwoWay}" Grid.Column="1" Grid.Row="5"
-                       Margin="5 5 5 5" />
-            <TextBox Text="{Binding Path=Passwords/Notes, Mode=TwoWay}" Grid.Column="1" Grid.Row="6"
-                       Margin="5 5 5 5" />
+            <Frame x:Name="EditorFrame" Grid.Row="0" 
+                   SourceUpdated="EditorFrame_SourceUpdated"/>
         </Grid>
     </Grid>
 </Page>

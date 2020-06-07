@@ -1,0 +1,81 @@
+﻿<Page x:Class="WPF_Project.PwdEditor"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPF_Project"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PwdEditor">
+    <Page.DataContext>
+        <local:PwdViewerViewMode />
+    </Page.DataContext>
+    <Page.Resources>
+        <local:StrenthValueConverter x:Key="strenthValueConverter" />
+        <local:PwdColorConverter x:Key="pwdColorConverter" />
+        <Style x:Key="Label" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="FooterBtnStyle" TargetType="Button">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="30" />
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Icon" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="0"/>
+        <TextBlock Text="Name" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="1"/>
+        <TextBlock Text="Email" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="2"/>
+        <TextBlock Text="Login" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="3"/>
+        <TextBlock Text="Password" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="4"/>
+        <TextBlock Text="Website" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="5"/>
+        <TextBlock Text="Notes" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="6"/>
+        <Button Command="{Binding SelectIcon}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center">
+            <StackPanel>
+                <Image x:Name="ImageBox" Source="{Binding Path=CacheImage, Mode=TwoWay}" Stretch="Fill" Width="100" Height="100"/>
+                <TextBlock Text="Select" />
+            </StackPanel>
+        </Button>
+        <TextBox x:Name="NameBox" Text="{Binding Path=Name, Mode=OneTime}" Grid.Column="1" Grid.Row="1"
+                     Margin="5 5 5 5"/>
+        <TextBox x:Name="EmailBox" Text="{Binding Path=Email, Mode=OneTime}" Grid.Column="1" Grid.Row="2"
+                     FontFamily="Consolas"
+                     Margin="5 5 5 5"/>
+        <TextBox x:Name="LoginBox" Text="{Binding Path=Login, Mode=OneTime}" Grid.Column="1" Grid.Row="3"
+                     FontFamily="Consolas"
+                     Margin="5 5 5 5"/>
+        <StackPanel Grid.Column="1" Grid.Row="4">
+            <TextBox x:Name="PwdInput" Text="{Binding Path=Password, Mode=OneTime}"
+                        FontFamily="Consolas"
+                        Margin="5 5 5 5" />
+            <ProgressBar Height="15" Minimum="0" Maximum="5"
+                             Value="{Binding ElementName=PwdInput, Path=Text, Converter={StaticResource strenthValueConverter}}" 
+                             Foreground="{Binding ElementName=PwdInput, Path=Text, Converter={StaticResource pwdColorConverter}}"/>
+        </StackPanel>
+        <TextBox x:Name="WebBox" Text="{Binding Path=Website, Mode=OneTime}" Grid.Column="1" Grid.Row="5"
+                       Margin="5 5 5 5" />
+        <TextBox x:Name="NotesBox" Text="{Binding Path=Notes, Mode=OneTime}" Grid.Column="1" Grid.Row="6"
+                       Margin="5 5 5 5" />
+        <StackPanel Grid.Row="7" Background="LightGray" Grid.Column="1" HorizontalAlignment="Stretch" 
+                    Orientation="Horizontal">
+            <Button Style="{StaticResource FooterBtnStyle}" Content="Apply"
+                        Click="Apply_Click" HorizontalAlignment="Right"/>
+            <Button Style="{StaticResource FooterBtnStyle}" Content="Cancle"
+                    Click="Cancle_Click" HorizontalAlignment="Right" />
+        </StackPanel>
+    </Grid>
+</Page>

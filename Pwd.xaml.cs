@@ -27,11 +27,17 @@ namespace WPF_Project
             InitializeComponent();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(PwdList.ItemsSource);
             view.Filter = UserFilter;
+            
 
         }
         private void PwdList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ((PwdEditorViewMode)this.DataContext).SelectedPwd = (Items.Pwd)this.PwdList.SelectedItem;
+            if (EditorFrame is null)
+            {
+                EditorFrame = new Frame();
+            }
+            EditorFrame.NavigationService.Navigate(new Uri("PwdViewer.xaml", UriKind.Relative));
+            EditorFrame.Refresh();
         }
 
         private void Search_TextChanged(object sender, TextChangedEventArgs e)
@@ -46,6 +52,16 @@ namespace WPF_Project
                 return true;
             else
                 return ((item as Items.Pwd).Name.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        private void AddPwd_Click(object sender, RoutedEventArgs e)
+        {
+            EditorFrame.NavigationService.Navigate(new Uri("PwdEditor.xaml", UriKind.Relative)); 
+        }
+
+        private void EditorFrame_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            ((PwdEditorViewMode)this.DataContext).IsEditing = false;
         }
     }
 }

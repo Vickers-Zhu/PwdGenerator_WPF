@@ -22,7 +22,6 @@ namespace WPF_Project
         private ICommand imgAddInsideCommand;
         private ICommand saveData;
         private ICommand loadData;
-        private ICommand imgAddingCommand;
         private static ObservableCollection<BaseItem> items;
         private static DirItem selectedDirItem;
         private static PwdItem selectedPwdItem;

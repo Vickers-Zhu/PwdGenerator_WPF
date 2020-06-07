@@ -78,6 +78,7 @@
     <Compile Include="Converters\EditableConverter.cs" />
     <Compile Include="Converters\FirstLetterConverter .cs" />
     <Compile Include="Converters\PwdColorConverter.cs" />
+    <Compile Include="Converters\ReverseBoolenConverter.cs" />
     <Compile Include="Converters\StrenthTextConverter.cs" />
     <Compile Include="Converters\StrenthValueConverter.cs" />
     <Compile Include="Dir.xaml.cs">
@@ -93,7 +94,14 @@
     <Compile Include="Pwd.xaml.cs">
       <DependentUpon>Pwd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PwdEditor.xaml.cs">
+      <DependentUpon>PwdEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PwdEditorViewMode.cs" />
+    <Compile Include="PwdViewer.xaml.cs">
+      <DependentUpon>PwdViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PwdViewerViewMode.cs" />
     <Compile Include="PwdViewModel.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Converters\ViewConverter.cs" />
@@ -134,6 +142,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pwd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PwdEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PwdViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

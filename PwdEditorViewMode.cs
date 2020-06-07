@@ -12,10 +12,11 @@ namespace WPF_Project
 {
     class PwdEditorViewMode : PwdViewModel
     {
-        private Items.Pwd selectedPwd;
+        private static Items.Pwd selectedPwd;
+        private static bool isEditing;
+        private static BitmapImage cacheImage;
         private ICommand onePwdAddCommand;
         private ICommand selectIcon;
-
         public Items.Pwd SelectedPwd 
         {
             get => selectedPwd;
@@ -23,6 +24,24 @@ namespace WPF_Project
             {
                 selectedPwd = value;
                 OnPropertyChanged("SelectedPwd");
+            }
+        }
+        public bool IsEditing 
+        {
+            get => isEditing;
+            set 
+            {
+                isEditing = value;
+                OnPropertyChanged("IsEditing");
+            }
+        }
+        public BitmapImage CacheImage
+        {
+            get => cacheImage;
+            set
+            {
+                cacheImage = value;
+                OnPropertyChanged("CacheImage");
             }
         }
         public ICommand OnePwdAddCommand 
@@ -62,7 +81,6 @@ namespace WPF_Project
         {
             OnePwdAddCommand = new RelayCommand(AddPwd);
             SelectIcon = new RelayCommand(PickIcon);
-
         }
         public void AddPwd(object obj)
         {
@@ -70,6 +88,7 @@ namespace WPF_Project
             {
                 Name = "Account Name"
             });
+            IsEditing = true;
         }
 
         public void PickIcon(object obj) 
@@ -79,7 +98,7 @@ namespace WPF_Project
             op.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
             if (op.ShowDialog() == DialogResult.OK)
             {
-                SelectedPwd.Icon = new BitmapImage(new Uri(op.FileName, UriKind.Absolute));
+                CacheImage = new BitmapImage(new Uri(op.FileName, UriKind.Absolute));
             }
         }
     }
