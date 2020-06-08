@@ -84,11 +84,12 @@ namespace WPF_Project
         }
         public void AddPwd(object obj)
         {
-            this.SelectedPwdItem.Passwords.Add(new Items.Pwd() 
+            Items.Pwd newPwd = new Items.Pwd()
             {
                 Name = "Account Name",
                 CreatedTime = DateTime.Now
-            });
+            };
+            this.SelectedPwdItem.Passwords.Add(newPwd);
             IsEditing = true;
         }
 

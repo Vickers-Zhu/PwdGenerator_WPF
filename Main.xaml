@@ -115,8 +115,7 @@
                             </ContentPresenter.Style>
                         </ContentPresenter>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type local:PwdItem}"
-                                              >
+                    <HierarchicalDataTemplate DataType="{x:Type local:PwdItem}">
                         <ContentPresenter Content="{Binding}">
                             <ContentPresenter.Style>
                                 <Style TargetType="{x:Type ContentPresenter}">
@@ -138,8 +137,7 @@
                             </ContentPresenter.Style>
                         </ContentPresenter>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type local:ImgItem}"
-                                              >
+                    <HierarchicalDataTemplate DataType="{x:Type local:ImgItem}">
                         <ContentPresenter Content="{Binding}">
                             <ContentPresenter.Style>
                                 <Style TargetType="{x:Type ContentPresenter}">
@@ -165,9 +163,10 @@
             </TreeView>
             <GridSplitter Grid.Column="1"/>
             <DockPanel Grid.Column="2">
-                <Frame Source="{Binding ElementName=TreeView, Path=SelectedItem, Converter={StaticResource viewConverter}}" 
+                <Frame Source="{Binding ElementName=TreeView, Path=SelectedItem, Mode=OneWay,
+                    UpdateSourceTrigger=PropertyChanged, Converter={StaticResource viewConverter}}" 
                        x:Name="_NavigationFrame" NavigationUIVisibility="Hidden"      
-               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </DockPanel>
         </Grid>
     </Grid>

@@ -9,8 +9,10 @@ using System.Windows.Media.Imaging;
 
 namespace WPF_Project.Items
 {
+    [Serializable]
     public class Pwd : INotifyPropertyChanged
     {
+        [field: NonSerializedAttribute()]
         private BitmapImage icon;
         private string name;
         private string email;
@@ -20,6 +22,8 @@ namespace WPF_Project.Items
         private string notes;
         private DateTime createdTime;
         private DateTime editedTime;
+        [field: NonSerializedAttribute()]
+        public event PropertyChangedEventHandler PropertyChanged;
         public BitmapImage Icon 
         {
             get { return icon; }
@@ -103,7 +107,6 @@ namespace WPF_Project.Items
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)

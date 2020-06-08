@@ -26,7 +26,8 @@ namespace WPF_Project
         {
             InitializeComponent();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(PwdList.ItemsSource);
-            view.Filter = UserFilter;
+            if(view != null)
+                view.Filter = UserFilter;
             
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -65,6 +66,7 @@ namespace WPF_Project
         private void EditorFrame_SourceUpdated(object sender, DataTransferEventArgs e)
         {
             ((PwdEditorViewMode)this.DataContext).IsEditing = false;
+            CollectionViewSource.GetDefaultView(PwdList.ItemsSource).Refresh();
         }
     }
 }

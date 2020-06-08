@@ -96,10 +96,11 @@
             <Button Content="Copy" DockPanel.Dock="Right" Width="30" Height="20" Click="CopyPwd_Click" />
         </DockPanel>
         <TextBlock x:Name="WebBox"  Grid.Column="1" Grid.Row="5"
-                       Margin="5 5 5 5" 
+                   Margin="5 5 5 5"                                 
                    Visibility="{Binding Path=Website, Mode=OneTime, Converter={StaticResource isCollapsedConverter}}">
-            <Hyperlink NavigateUri="{Binding Path=Website, Mode=OneTime}">
-                <Run Text="{Binding Path=Website, Mode=OneTime}"/>              
+            <Hyperlink NavigateUri="{Binding Path=Website, Mode=OneTime}"
+                       RequestNavigate="Website_RequestNavigate">
+                <TextBlock Text="{Binding Path=Website, Mode=OneTime}"/>              
             </Hyperlink>
         </TextBlock>
         <TextBlock x:Name="NotesBox" Text="{Binding Path=Notes, Mode=OneTime}" Grid.Column="1" Grid.Row="6"

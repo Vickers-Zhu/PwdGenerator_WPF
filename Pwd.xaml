@@ -83,7 +83,8 @@
                      IsSynchronizedWithCurrentItem="False"
                      SelectionChanged="PwdList_SelectionChanged"
                      ItemTemplate="{StaticResource ResourceKey=pwdItem}"
-                     SelectedItem="{Binding SelectedPwd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                     SelectedItem="{Binding SelectedPwd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     >
                 <ListBox.GroupStyle>
                     <GroupStyle 
                      HeaderTemplate="{StaticResource ResourceKey=GroupingHeader}" />

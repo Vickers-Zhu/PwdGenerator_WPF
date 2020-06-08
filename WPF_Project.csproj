@@ -87,7 +87,7 @@
     <Compile Include="Dir.xaml.cs">
       <DependentUpon>Dir.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageViewMode.cs" />
+    <Compile Include="ViewModels\ImageViewMode.cs" />
     <Compile Include="Img.xaml.cs">
       <DependentUpon>Img.xaml</DependentUpon>
     </Compile>
@@ -100,12 +100,13 @@
     <Compile Include="PwdEditor.xaml.cs">
       <DependentUpon>PwdEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PwdEditorViewMode.cs" />
+    <Compile Include="ViewModels\LoginViewMode.cs" />
+    <Compile Include="ViewModels\PwdEditorViewMode.cs" />
     <Compile Include="PwdViewer.xaml.cs">
       <DependentUpon>PwdViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PwdViewerViewMode.cs" />
-    <Compile Include="PwdViewModel.cs" />
+    <Compile Include="ViewModels\PwdViewerViewMode.cs" />
+    <Compile Include="ViewModels\PwdViewModel.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Converters\ViewConverter.cs" />
     <Page Include="Dir.xaml">

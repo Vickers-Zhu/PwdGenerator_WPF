@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +58,22 @@ namespace WPF_Project
         {
             Clipboard.SetData(DataFormats.Text,
                 (Object)((PwdViewerViewMode)this.DataContext).Password);
+        }
+        private void Website_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            }
+            catch (InvalidOperationException ev)
+            {
+                MessageBox.Show("This operation is not supported by a relative URI",
+                    "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally 
+            {
+                e.Handled = true;
+            }
         }
     }
 }

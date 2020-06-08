@@ -32,7 +32,7 @@ namespace WPF_Project
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ((PwdViewModel)this.DataContext).Items = PwdViewModel.Load();
+            ((PwdViewModel)this.DataContext).Items = ((PwdViewModel)this.DataContext).Load();
         }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -68,6 +68,7 @@ namespace WPF_Project
                 ((PwdViewModel)this.DataContext).SelectedImgItem = null;
                 ((PwdViewModel)this.DataContext).SelectedDirItem = null;
             }
+            //_NavigationFrame.Content;
         }
 
         private void TreeView_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

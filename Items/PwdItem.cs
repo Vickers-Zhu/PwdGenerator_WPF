@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace WPF_Project
 {
+    [Serializable]
     public class PwdItem : BaseItem
     {
         public static int Count { get; set; }
         private string header;
         private bool isEditable = false;
+        private ObservableCollection<Items.Pwd> passwords;
         public string Header
         {
             get => header;
@@ -32,9 +34,6 @@ namespace WPF_Project
                 OnPropertyChanged("IsEditable");
             }
         }
-
-        private ObservableCollection<Items.Pwd> passwords;
-
         public ObservableCollection<Items.Pwd> Passwords
         {
             get 

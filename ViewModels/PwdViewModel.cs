@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace WPF_Project
 {
-    class PwdViewModel : INotifyPropertyChanged
+    class PwdViewModel : LoginViewMode
     {
         private ICommand dirAddCommand;
         private ICommand pwdAddCommand;
@@ -21,18 +21,15 @@ namespace WPF_Project
         private ICommand pwdAddInsideCommand;
         private ICommand imgAddInsideCommand;
         private ICommand saveData;
-        private ICommand loadData;
         private static ObservableCollection<BaseItem> items;
         private static DirItem selectedDirItem;
         private static PwdItem selectedPwdItem;
         private static ImgItem selectedImgItem;
-        private static string passphrase;
         public ObservableCollection<BaseItem> Items
         {
             get
             {
                 if (items is null)
-                    //items = new DirItem();
                     items = new ObservableCollection<BaseItem>();
                 return items;
             }
@@ -72,15 +69,6 @@ namespace WPF_Project
                 if (value is null && selectedImgItem != null) selectedImgItem.IsEditable = false;
                 selectedImgItem = value;
                 OnPropertyChanged("SelectedImgItem");
-            }
-        }
-
-        public string Passphrase 
-        {
-            get => passphrase;
-            set 
-            {
-                passphrase = value;
             }
         }
         public ICommand DirAddCommand
@@ -139,14 +127,6 @@ namespace WPF_Project
                 saveData = value;
             }
         }
-        public ICommand LoadData 
-        {
-            get => loadData;
-            set 
-            {
-                loadData = value;
-            }
-        }
         public ICommand ImgAddingCommand 
         {
             get => imgAddCommand;
@@ -155,7 +135,6 @@ namespace WPF_Project
                 imgAddCommand = value;
             }     
         }
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public PwdViewModel()
         {
@@ -166,13 +145,6 @@ namespace WPF_Project
             PwdAddInsideCommand = new RelayCommand(PwdAddInside);
             ImgAddInsideCommand = new RelayCommand(ImgAddInside);
             SaveData = new RelayCommand(Save);
-        }
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         public void DirAdd(object obj)
@@ -257,7 +229,7 @@ namespace WPF_Project
 
                 memStream.Close();
             }
-            byte[] encryptedBytes = DataEncryption.Encrypt("qweasdzxc", byteArray);
+            byte[] encryptedBytes = DataEncryption.Encrypt(Passphrase, byteArray);
             using (FileStream fs = new FileStream("Passwords.bin", FileMode.Create))
             {
                 for (int i = 0; i < encryptedBytes.Length; i++) 
@@ -265,30 +237,6 @@ namespace WPF_Project
                     fs.WriteByte(encryptedBytes[i]);
                 }
             }
-        }
-        public static ObservableCollection<BaseItem> Load()
-        {
-            byte[] dataArray = System.IO.File.ReadAllBytes("Passwords.bin");
-            byte[] decryptedBytes = DataEncryption.Decrypt("qweasdzxc", dataArray);
-            MemoryStream memStream = new MemoryStream(100000);
-            memStream.Write(decryptedBytes, 0, decryptedBytes.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
-            ObservableCollection<BaseItem> result;
-            try
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                result = formatter.Deserialize(memStream) as ObservableCollection<BaseItem>;
-            }
-            catch (SerializationException e)
-            {
-                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
-                throw;
-            }
-            finally
-            {
-                memStream.Close();
-            }
-            return result;
         }
         public void Delete(object obj) 
         {

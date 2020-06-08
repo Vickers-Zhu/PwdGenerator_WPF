@@ -6,7 +6,9 @@
       xmlns:local="clr-namespace:WPF_Project"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
-
+    <Page.DataContext>
+        <local:LoginViewMode />
+    </Page.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

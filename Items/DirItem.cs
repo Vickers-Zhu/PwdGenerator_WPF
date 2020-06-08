@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 
 namespace WPF_Project
 {
+    [Serializable]
     public class DirItem : BaseItem
     {
         public static int Count { get; set; }

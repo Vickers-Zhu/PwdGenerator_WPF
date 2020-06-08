@@ -27,6 +27,15 @@ namespace WPF_Project
 
         private void btn_login_Click(object sender, RoutedEventArgs e)
         {
+            if (System.IO.File.Exists("Passwords.bin")) 
+            {
+                if (txt_Pwd.Password != ((LoginViewMode)this.DataContext).Passphrase)              
+                {
+                    MessageBox.Show("Password is not correct",
+                        "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
             this.NavigationService.Navigate(new Uri("Main.xaml", UriKind.Relative));
         }
     }

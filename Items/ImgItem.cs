@@ -8,11 +8,13 @@ using System.Windows.Media.Imaging;
 
 namespace WPF_Project
 {
+    [Serializable]
     public class ImgItem : BaseItem
     {
         public static int Count { get; set; }
         private string header;
         private bool isEditable = false;
+        [field: NonSerializedAttribute()]
         private BitmapImage image;
         public string Header
         {
