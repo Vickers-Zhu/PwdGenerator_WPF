@@ -13,6 +13,8 @@
     <Page.Resources>
         <local:StrenthValueConverter x:Key="strenthValueConverter" />
         <local:PwdColorConverter x:Key="pwdColorConverter" />
+        <local:ResolutionConverter x:Key="resolutionConveter" />
+        <local:ImageFormatConverter x:Key="imageFormatConveter" />
         <Style x:Key="Label" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -44,12 +46,22 @@
         <TextBlock Text="Password" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="4"/>
         <TextBlock Text="Website" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="5"/>
         <TextBlock Text="Notes" Style="{StaticResource Label}" Grid.Column="0" Grid.Row="6"/>
-        <Button Command="{Binding SelectIcon}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center">
-            <StackPanel>
-                <Image x:Name="ImageBox" Source="{Binding Path=CacheImage, Mode=TwoWay}" Stretch="Fill" Width="100" Height="100"/>
-                <TextBlock Text="Select" />
+        <DockPanel Grid.Column="1" Grid.Row="0">
+            <Button Command="{Binding SelectIcon}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center">
+                <StackPanel>
+                    <Image x:Name="ImageBox" Source="{Binding Path=CacheImage, Mode=TwoWay}" Stretch="Fill" Width="100" Height="100"/>
+                    <TextBlock Text="Select" />
+                </StackPanel>
+            </Button>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                <TextBlock Text="{Binding ElementName=ImageBox, Path=Source,
+                    Converter={StaticResource resolutionConveter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="{Binding DPI}" />
+                <TextBlock Text="{Binding ElementName=ImageBox, Path=Source,
+                    Converter={StaticResource imageFormatConveter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
-        </Button>
+        </DockPanel>
+
         <TextBox x:Name="NameBox" Text="{Binding Path=Name, Mode=OneTime}" Grid.Column="1" Grid.Row="1"
                      Margin="5 5 5 5"/>
         <TextBox x:Name="EmailBox" Text="{Binding Path=Email, Mode=OneTime}" Grid.Column="1" Grid.Row="2"

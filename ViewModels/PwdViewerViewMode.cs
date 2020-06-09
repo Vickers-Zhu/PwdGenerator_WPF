@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace WPF_Project
@@ -127,30 +130,32 @@ namespace WPF_Project
                     SelectedPwd.EditedTime = value;
             }
         }
-
         public string Resolution 
         {
             get 
             {
-                if (Icon is null) return null;
-                return $"{Icon.Width}x{Icon.Height}";           
+                if (CacheImage is null) return null;
+                return $"{CacheImage.Width}x{CacheImage.Height}";           
             }     
         }
 
-        public string PDI 
+        public string DPI 
         {
             get 
             {
-                if (Icon is null) return null;
-                return $"{Icon.PixelWidth}x{Icon.PixelHeight}";
+                var dpiXProperty = typeof(SystemParameters).GetProperty("DpiX", BindingFlags.NonPublic | BindingFlags.Static);
+                var dpiYProperty = typeof(SystemParameters).GetProperty("Dpi", BindingFlags.NonPublic | BindingFlags.Static);
+                var dpiX = (int)dpiXProperty.GetValue(null, null);
+                var dpiY = (int)dpiYProperty.GetValue(null, null); 
+                return $"{dpiX}x{dpiY}";
             }
         }
         public string Format
         {
             get 
             {
-                if (Icon is null) return null;
-                return Icon.Format.ToString();
+                if (CacheImage is null) return null;
+                return CacheImage.Format.ToString();
             }
         }
     }
